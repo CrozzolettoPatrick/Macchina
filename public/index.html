@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MacchinaLocker">
+  <title>MacchinaLocker</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- ── AUTH VIEW ── -->
+  <div id="auth-view">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <rect width="56" height="56" rx="16" fill="#1c1c1e"/>
+          <path d="M28 14C23.03 14 19 18.03 19 23v3h-2a2 2 0 00-2 2v14a2 2 0 002 2h22a2 2 0 002-2V28a2 2 0 00-2-2h-2v-3c0-4.97-4.03-9-9-9zm0 3c3.31 0 6 2.69 6 6v3H22v-3c0-3.31 2.69-6 6-6zm0 13a3 3 0 110 6 3 3 0 010-6z" fill="#30d158"/>
+        </svg>
+      </div>
+      <h1>MacchinaLocker</h1>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Accedi</button>
+        <button class="auth-tab" data-tab="register">Registrati</button>
+      </div>
+      <form id="auth-form">
+        <input type="email" id="auth-email" placeholder="Email" autocomplete="email" required>
+        <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password" required>
+        <button type="submit" class="btn-primary" id="auth-submit">Accedi</button>
+      </form>
+      <p id="auth-error" class="error-msg"></p>
+    </div>
+  </div>
+
+  <!-- ── APP VIEW ── -->
+  <div id="app-view" class="hidden">
+
+    <header class="app-header">
+      <span class="app-title">MacchinaLocker</span>
+      <div class="header-right">
+        <span id="header-email" class="header-email"></span>
+        <button id="btn-logout" class="btn-icon">Esci</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+
+      <!-- STATO: IDLE -->
+      <div id="state-idle">
+        <p class="state-label">La macchina è aperta</p>
+        <button id="btn-chiudi" class="btn-main btn-green">CHIUDI</button>
+      </div>
+
+      <!-- STATO: CHIUSA -->
+      <div id="state-locked" class="hidden">
+        <div class="locked-header">
+          <div class="locked-badge">CHIUSA</div>
+          <div id="locked-time" class="locked-time"></div>
+          <div id="locked-note" class="locked-note hidden"></div>
+        </div>
+        <div id="map" class="map-container"></div>
+        <button id="btn-navigate" class="btn-main btn-blue">PORTAMI ALLA MACCHINA</button>
+        <button id="btn-apri" class="btn-secondary">APRI</button>
+      </div>
+
+    </main>
+
+    <!-- STORICO -->
+    <div class="history-section">
+      <button id="history-toggle" class="history-toggle">
+        <span>Storico parcheggi</span>
+        <span class="toggle-arrow">▼</span>
+      </button>
+      <div id="history-list" class="history-list hidden"></div>
+    </div>
+
+  </div>
+
+  <!-- ── MODALE NOTE ── -->
+  <div id="note-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button id="note-close" class="modal-close">✕</button>
+      <h3 class="modal-title">Aggiungi una nota</h3>
+      <p class="modal-sub">Opzionale — es. "Piano B2, posto 47"</p>
+      <textarea id="note-input" class="note-textarea" placeholder="Scrivi qui..."></textarea>
+      <button id="note-confirm" class="btn-primary">Salva posizione</button>
+    </div>
+  </div>
+
+  <!-- ── LOADING ── -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Acquisizione GPS...</p>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
