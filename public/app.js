@@ -123,6 +123,8 @@ function setIdleState() {
   if (leafletMap) { leafletMap.remove(); leafletMap = null; }
   document.getElementById('state-idle').classList.remove('hidden');
   document.getElementById('state-locked').classList.add('hidden');
+  // Riabilita sempre il bottone CHIUDI: era stato disabilitato durante la chiusura
+  document.getElementById('btn-chiudi').disabled = false;
 }
 
 function setLockedState(parking) {
