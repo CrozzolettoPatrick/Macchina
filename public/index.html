@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#111111">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="MacchinaLocker">
-  <title>MacchinaLocker</title>
+  <meta name="apple-mobile-web-app-title" content="HoChiusoLaMacchina?">
+  <title>HoChiusoLaMacchina?</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="/style.css">
@@ -17,13 +17,75 @@
   <!-- ── AUTH VIEW ── -->
   <div id="auth-view">
     <div class="auth-container">
+
+      <!-- LOGO: macchina aperta + ? + macchina chiusa -->
       <div class="auth-logo">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-          <rect width="56" height="56" rx="16" fill="#1c1c1e"/>
-          <path d="M28 14C23.03 14 19 18.03 19 23v3h-2a2 2 0 00-2 2v14a2 2 0 002 2h22a2 2 0 002-2V28a2 2 0 00-2-2h-2v-3c0-4.97-4.03-9-9-9zm0 3c3.31 0 6 2.69 6 6v3H22v-3c0-3.31 2.69-6 6-6zm0 13a3 3 0 110 6 3 3 0 010-6z" fill="#30d158"/>
-        </svg>
+        <div class="logo-cars">
+
+          <!-- Macchina APERTA (rossa) -->
+          <div class="car-state">
+            <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
+              <!-- lucchetto aperto -->
+              <path d="M8,14 L8,10 Q8,5 14,5 Q20,5 20,10" stroke="#ff453a" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="6" y="14" width="16" height="13" rx="3" fill="none" stroke="#ff453a" stroke-width="2"/>
+              <circle cx="14" cy="21" r="2.5" fill="#ff453a"/>
+              <line x1="14" y1="21" x2="14" y2="24" stroke="#ff453a" stroke-width="2" stroke-linecap="round"/>
+              <!-- lucchetto aperto: ganascia sganciata -->
+              <path d="M20,10 Q24,8 24,5" stroke="#ff453a" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <svg width="90" height="52" viewBox="0 0 80 48" fill="none">
+              <!-- carrozzeria -->
+              <path d="M3,38 L3,27 Q3,22 8,22 L16,22 L27,12 L52,12 L63,22 L70,22 Q75,22 75,27 L75,38 Z"
+                    fill="#ff453a18" stroke="#ff453a" stroke-width="2" stroke-linejoin="round"/>
+              <!-- lunotto posteriore -->
+              <path d="M52,12 L62,22 L44,22 Z" fill="#ff453a25"/>
+              <!-- parabrezza -->
+              <path d="M27,12 L17,22 L38,22 Z" fill="#ff453a25"/>
+              <!-- ruota sx -->
+              <circle cx="17" cy="38" r="9" fill="#111" stroke="#ff453a" stroke-width="2"/>
+              <circle cx="17" cy="38" r="4" fill="#ff453a"/>
+              <!-- ruota dx -->
+              <circle cx="62" cy="38" r="9" fill="#111" stroke="#ff453a" stroke-width="2"/>
+              <circle cx="62" cy="38" r="4" fill="#ff453a"/>
+            </svg>
+            <span class="car-label car-label-red">Aperta</span>
+          </div>
+
+          <!-- Punto interrogativo -->
+          <div class="logo-question">?</div>
+
+          <!-- Macchina CHIUSA (verde) -->
+          <div class="car-state">
+            <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
+              <!-- lucchetto chiuso -->
+              <path d="M8,14 L8,10 Q8,5 14,5 Q20,5 20,10 L20,14" stroke="#30d158" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <rect x="6" y="14" width="16" height="13" rx="3" fill="none" stroke="#30d158" stroke-width="2"/>
+              <circle cx="14" cy="21" r="2.5" fill="#30d158"/>
+              <line x1="14" y1="21" x2="14" y2="24" stroke="#30d158" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <svg width="90" height="52" viewBox="0 0 80 48" fill="none">
+              <!-- carrozzeria -->
+              <path d="M3,38 L3,27 Q3,22 8,22 L16,22 L27,12 L52,12 L63,22 L70,22 Q75,22 75,27 L75,38 Z"
+                    fill="#30d15818" stroke="#30d158" stroke-width="2" stroke-linejoin="round"/>
+              <!-- lunotto posteriore -->
+              <path d="M52,12 L62,22 L44,22 Z" fill="#30d15825"/>
+              <!-- parabrezza -->
+              <path d="M27,12 L17,22 L38,22 Z" fill="#30d15825"/>
+              <!-- ruota sx -->
+              <circle cx="17" cy="38" r="9" fill="#111" stroke="#30d158" stroke-width="2"/>
+              <circle cx="17" cy="38" r="4" fill="#30d158"/>
+              <!-- ruota dx -->
+              <circle cx="62" cy="38" r="9" fill="#111" stroke="#30d158" stroke-width="2"/>
+              <circle cx="62" cy="38" r="4" fill="#30d158"/>
+            </svg>
+            <span class="car-label car-label-green">Chiusa</span>
+          </div>
+
+        </div>
       </div>
-      <h1>MacchinaLocker</h1>
+
+      <h1 class="auth-title">HoChiuso<br>LaMacchina?</h1>
+
       <div class="auth-tabs">
         <button class="auth-tab active" data-tab="login">Accedi</button>
         <button class="auth-tab" data-tab="register">Registrati</button>
@@ -41,7 +103,7 @@
   <div id="app-view" class="hidden">
 
     <header class="app-header">
-      <span class="app-title">MacchinaLocker</span>
+      <span class="app-title">HoChiusoLaMacchina?</span>
       <div class="header-right">
         <span id="header-email" class="header-email"></span>
         <button id="btn-logout" class="btn-icon">Esci</button>
@@ -89,7 +151,7 @@
       <h3 class="modal-title">Aggiungi una nota</h3>
       <p class="modal-sub">Opzionale — es. "Piano B2, posto 47"</p>
       <textarea id="note-input" class="note-textarea" placeholder="Scrivi qui..."></textarea>
-      <button id="note-confirm" class="btn-primary">Salva posizione</button>
+      <button id="note-confirm" class="btn-primary">Salva nota</button>
     </div>
   </div>
 

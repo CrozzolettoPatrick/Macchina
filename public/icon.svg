@@ -1,4 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#1c1c1e"/>
-  <path d="M256 112c-63.5 0-115 51.5-115 115v38H120a24 24 0 00-24 24v172a24 24 0 0024 24h272a24 24 0 0024-24V289a24 24 0 00-24-24h-21v-38c0-63.5-51.5-115-115-115zm0 46c37.6 0 69 30.4 69 69v38H187v-38c0-38.6 30.4-69 69-69zm0 154a38 38 0 110 76 38 38 0 010-76z" fill="#30d158"/>
+  <!-- macchina aperta (rossa, sinistra) -->
+  <g transform="translate(20, 160)">
+    <path d="M4,130 L4,90 Q4,74 18,74 L44,74 L82,34 L158,34 L196,74 L220,74 Q234,74 234,90 L234,130 Z"
+          fill="#ff453a22" stroke="#ff453a" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M82,34 L48,74 L120,74 Z" fill="#ff453a30"/>
+    <path d="M158,34 L192,74 L136,74 Z" fill="#ff453a30"/>
+    <circle cx="44" cy="130" r="30" fill="#1c1c1e" stroke="#ff453a" stroke-width="8"/>
+    <circle cx="44" cy="130" r="14" fill="#ff453a"/>
+    <circle cx="194" cy="130" r="30" fill="#1c1c1e" stroke="#ff453a" stroke-width="8"/>
+    <circle cx="194" cy="130" r="14" fill="#ff453a"/>
+    <!-- lucchetto aperto sopra -->
+    <path d="M95,24 L95,8 Q95,-4 119,-4 Q143,-4 143,8" stroke="#ff453a" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M143,8 Q155,2 158,-4" stroke="#ff453a" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="88" y="24" width="62" height="46" rx="8" fill="none" stroke="#ff453a" stroke-width="8"/>
+    <circle cx="119" cy="47" r="9" fill="#ff453a"/>
+  </g>
+  <!-- punto interrogativo centrale -->
+  <text x="256" y="310" text-anchor="middle" font-family="-apple-system,Helvetica,Arial,sans-serif"
+        font-weight="900" font-size="120" fill="white">?</text>
+  <!-- macchina chiusa (verde, destra) -->
+  <g transform="translate(258, 160)">
+    <path d="M4,130 L4,90 Q4,74 18,74 L44,74 L82,34 L158,34 L196,74 L220,74 Q234,74 234,90 L234,130 Z"
+          fill="#30d15822" stroke="#30d158" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M82,34 L48,74 L120,74 Z" fill="#30d15830"/>
+    <path d="M158,34 L192,74 L136,74 Z" fill="#30d15830"/>
+    <circle cx="44" cy="130" r="30" fill="#1c1c1e" stroke="#30d158" stroke-width="8"/>
+    <circle cx="44" cy="130" r="14" fill="#30d158"/>
+    <circle cx="194" cy="130" r="30" fill="#1c1c1e" stroke="#30d158" stroke-width="8"/>
+    <circle cx="194" cy="130" r="14" fill="#30d158"/>
+    <!-- lucchetto chiuso sopra -->
+    <path d="M88,24 L88,8 Q88,-4 119,-4 Q143,-4 143,8 L143,24" stroke="#30d158" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <rect x="76" y="24" width="62" height="46" rx="8" fill="none" stroke="#30d158" stroke-width="8"/>
+    <circle cx="107" cy="47" r="9" fill="#30d158"/>
+  </g>
 </svg>

@@ -42,16 +42,49 @@ html, body {
 }
 
 .auth-logo {
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: center;
+  margin-bottom: 12px;
 }
 
-.auth-container h1 {
-  font-size: 1.75rem;
+.logo-cars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.car-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo-question {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+
+.car-label {
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.car-label-red   { color: #ff453a; }
+.car-label-green { color: #30d158; }
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 800;
   letter-spacing: -0.5px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+  line-height: 1.15;
+  text-align: center;
 }
 
 .auth-tabs {
@@ -143,7 +176,7 @@ html, body {
 }
 
 .app-title {
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: -0.3px;
 }
