@@ -121,11 +121,6 @@ function setLockedState(parking) {
   document.getElementById('state-idle').classList.add('hidden');
   document.getElementById('state-locked').classList.remove('hidden');
 
-  // Protegge da ghost click su mobile: disabilita APRI per 1 secondo
-  const btnApri = document.getElementById('btn-apri');
-  btnApri.disabled = true;
-  setTimeout(() => { btnApri.disabled = false; }, 1000);
-
   document.getElementById('locked-time').textContent =
     `Parcheggiata ${formatDate(new Date(parking.parked_at))}`;
 
@@ -142,37 +137,58 @@ function setLockedState(parking) {
 
 // ── CHIUDI ────────────────────────────────────────────────────────────
 async function handleChiudi() {
-  // Avvia il GPS subito, in background, mentre l'utente scrive la nota
-  let resolvePos, rejectPos;
-  const posPromise = new Promise((res, rej) => { resolvePos = res; rejectPos = rej; });
-  navigator.geolocation.getCurrentPosition(resolvePos, rejectPos, {
-    enableHighAccuracy: true,
-    timeout: 15000,
-    maximumAge: 0
-  });
+  const btnChiudi = document.getElementById('btn-chiudi');
+  btnChiudi.disabled = true;
 
-  // Mostra modale note (opzionale)
-  const note = await showNoteModal();
-
-  // Attendi GPS
+  // 1. Acquisisci GPS
   showLoading(true);
   let position;
   try {
-    position = await posPromise;
+    position = await new Promise((res, rej) =>
+      navigator.geolocation.getCurrentPosition(res, rej, {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      })
+    );
   } catch {
     showLoading(false);
+    btnChiudi.disabled = false;
     alert('Impossibile ottenere la posizione GPS.\nVerifica di aver concesso i permessi di localizzazione.');
     return;
   }
 
   const { latitude: lat, longitude: lng } = position.coords;
 
+  // 2. Salva il parcheggio (senza nota)
+  let parking;
   try {
-    const parking = await apiPost('/api/parking', { lat, lng, note });
-    if (parking && !parking.error) setLockedState(parking);
+    parking = await apiPost('/api/parking', { lat, lng, note: null });
   } finally {
     showLoading(false);
   }
+
+  if (!parking || parking.error) {
+    btnChiudi.disabled = false;
+    return;
+  }
+
+  // 3. Mostra lo stato locked (transizione UI completa)
+  setLockedState(parking);
+
+  // 4. Solo ORA mostra il modale note (opzionale)
+  setTimeout(async () => {
+    const note = await showNoteModal();
+    if (note && currentParking) {
+      const updated = await apiPatchNote(`/api/parking/${currentParking.id}/note`, { note });
+      if (updated && !updated.error) {
+        currentParking = updated;
+        const noteEl = document.getElementById('locked-note');
+        noteEl.textContent = `"${note}"`;
+        noteEl.classList.remove('hidden');
+      }
+    }
+  }, 400);
 }
 
 // ── APRI ──────────────────────────────────────────────────────────────
@@ -311,6 +327,18 @@ async function apiPatch(url) {
     const res = await fetch(url, {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${token()}` }
+    });
+    if (res.status === 401) { logout(); return null; }
+    return res.json();
+  } catch { return null; }
+}
+
+async function apiPatchNote(url, body) {
+  try {
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token()}` },
+      body: JSON.stringify(body)
     });
     if (res.status === 401) { logout(); return null; }
     return res.json();

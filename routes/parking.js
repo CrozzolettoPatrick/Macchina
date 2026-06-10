@@ -37,6 +37,21 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// Aggiorna nota parcheggio
+router.patch('/:id/note', auth, async (req, res) => {
+  const { note } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE parkings SET note = $1 WHERE id = $2 AND user_id = $3 RETURNING *',
+      [note || null, req.params.id, req.user.userId]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Parcheggio non trovato' });
+    res.json(result.rows[0]);
+  } catch {
+    res.status(500).json({ error: 'Errore del server' });
+  }
+});
+
 // Chiudi parcheggio (APRI / reset)
 router.patch('/:id/close', auth, async (req, res) => {
   try {
