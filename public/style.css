@@ -298,6 +298,7 @@ html, body {
 }
 
 .btn-secondary:active { background: var(--border); }
+.btn-secondary:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── STORICO ── */
 .history-section {

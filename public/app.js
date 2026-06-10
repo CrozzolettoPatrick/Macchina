@@ -121,6 +121,11 @@ function setLockedState(parking) {
   document.getElementById('state-idle').classList.add('hidden');
   document.getElementById('state-locked').classList.remove('hidden');
 
+  // Protegge da ghost click su mobile: disabilita APRI per 1 secondo
+  const btnApri = document.getElementById('btn-apri');
+  btnApri.disabled = true;
+  setTimeout(() => { btnApri.disabled = false; }, 1000);
+
   document.getElementById('locked-time').textContent =
     `Parcheggiata ${formatDate(new Date(parking.parked_at))}`;
 
