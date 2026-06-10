@@ -9,6 +9,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Il Service Worker e la pagina principale non devono MAI restare in cache HTTP:
+// così il browser rileva sempre gli aggiornamenti del codice.
+app.use((req, res, next) => {
+  if (req.path === '/sw.js' || req.path === '/' || req.path === '/index.html') {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', require('./routes/auth'));

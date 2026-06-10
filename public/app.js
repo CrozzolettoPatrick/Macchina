@@ -7,6 +7,14 @@ let leafletMap = null;
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
+    // Quando un nuovo Service Worker prende il controllo, ricarica una volta
+    // per assicurarsi di eseguire sempre il codice aggiornato.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
   }
 
   setupAuthForm();
