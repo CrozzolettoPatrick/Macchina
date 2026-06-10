@@ -2,8 +2,6 @@
 
 let currentParking = null;
 let leafletMap = null;
-let watchId = null;
-const SOGLIA_METRI = 50;
 
 // ── Init ──────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -89,7 +87,6 @@ function setupAuthForm() {
 }
 
 function logout() {
-  stopProximityWatch();
   if (leafletMap) { leafletMap.remove(); leafletMap = null; }
   currentParking = null;
   localStorage.removeItem('token');
@@ -114,7 +111,6 @@ async function loadCurrentParking() {
 
 function setIdleState() {
   currentParking = null;
-  stopProximityWatch();
   if (leafletMap) { leafletMap.remove(); leafletMap = null; }
   document.getElementById('state-idle').classList.remove('hidden');
   document.getElementById('state-locked').classList.add('hidden');
@@ -137,7 +133,6 @@ function setLockedState(parking) {
   }
 
   initMap(parseFloat(parking.lat), parseFloat(parking.lng));
-  startProximityWatch(parseFloat(parking.lat), parseFloat(parking.lng));
 }
 
 // ── CHIUDI ────────────────────────────────────────────────────────────
@@ -178,7 +173,6 @@ async function handleChiudi() {
 // ── APRI ──────────────────────────────────────────────────────────────
 async function handleApri() {
   if (!currentParking) return;
-  stopProximityWatch();
   await apiPatch(`/api/parking/${currentParking.id}/close`);
   setIdleState();
 }
@@ -211,20 +205,6 @@ function initMap(lat, lng) {
     });
     L.marker([lat, lng], { icon }).addTo(leafletMap);
   }, 120);
-}
-
-// ── Prossimità automatica ─────────────────────────────────────────────
-function startProximityWatch(targetLat, targetLng) {
-  if (!navigator.geolocation) return;
-  stopProximityWatch();
-  watchId = navigator.geolocation.watchPosition(pos => {
-    const dist = haversine(pos.coords.latitude, pos.coords.longitude, targetLat, targetLng);
-    if (dist < SOGLIA_METRI) handleApri();
-  }, null, { enableHighAccuracy: true, timeout: 30000 });
-}
-
-function stopProximityWatch() {
-  if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
 }
 
 // ── Modale note ───────────────────────────────────────────────────────
@@ -292,16 +272,6 @@ function formatDate(date) {
   if (isToday) return `oggi alle ${time}`;
   if (isYesterday) return `ieri alle ${time}`;
   return `il ${date.toLocaleDateString('it-IT')} alle ${time}`;
-}
-
-function haversine(lat1, lon1, lat2, lon2) {
-  const R = 6371000;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 function showLoading(show) {
