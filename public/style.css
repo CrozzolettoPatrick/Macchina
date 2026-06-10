@@ -272,6 +272,16 @@ html, body {
   text-align: center;
 }
 
+.btn-note {
+  background: transparent;
+  color: var(--blue);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
 .map-container {
   width: 100%;
   max-width: 400px;

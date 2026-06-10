@@ -101,6 +101,7 @@ function setupAppButtons() {
   document.getElementById('btn-apri').addEventListener('click', () => handleApri());
   document.getElementById('btn-navigate').addEventListener('click', navigateToCar);
   document.getElementById('history-toggle').addEventListener('click', toggleHistory);
+  document.getElementById('btn-add-note').addEventListener('click', handleAddNote);
 }
 
 // ── State management ──────────────────────────────────────────────────
@@ -128,8 +129,10 @@ function setLockedState(parking) {
   if (parking.note) {
     noteEl.textContent = `"${parking.note}"`;
     noteEl.classList.remove('hidden');
+    document.getElementById('btn-add-note').textContent = '✎ Modifica nota';
   } else {
     noteEl.classList.add('hidden');
+    document.getElementById('btn-add-note').textContent = '+ Aggiungi nota';
   }
 
   initMap(parseFloat(parking.lat), parseFloat(parking.lng));
@@ -173,22 +176,8 @@ async function handleChiudi() {
     return;
   }
 
-  // 3. Mostra lo stato locked (transizione UI completa)
+  // 3. Mostra lo stato locked
   setLockedState(parking);
-
-  // 4. Solo ORA mostra il modale note (opzionale)
-  setTimeout(async () => {
-    const note = await showNoteModal();
-    if (note && currentParking) {
-      const updated = await apiPatchNote(`/api/parking/${currentParking.id}/note`, { note });
-      if (updated && !updated.error) {
-        currentParking = updated;
-        const noteEl = document.getElementById('locked-note');
-        noteEl.textContent = `"${note}"`;
-        noteEl.classList.remove('hidden');
-      }
-    }
-  }, 400);
 }
 
 // ── APRI ──────────────────────────────────────────────────────────────
@@ -196,6 +185,26 @@ async function handleApri() {
   if (!currentParking) return;
   await apiPatch(`/api/parking/${currentParking.id}/close`);
   setIdleState();
+}
+
+// ── AGGIUNGI NOTA ─────────────────────────────────────────────────────
+async function handleAddNote() {
+  if (!currentParking) return;
+  const note = await showNoteModal();
+  if (note === null) return;
+  const updated = await apiPatchNote(`/api/parking/${currentParking.id}/note`, { note });
+  if (updated && !updated.error) {
+    currentParking = updated;
+    const noteEl = document.getElementById('locked-note');
+    if (note) {
+      noteEl.textContent = `"${note}"`;
+      noteEl.classList.remove('hidden');
+      document.getElementById('btn-add-note').textContent = '✎ Modifica nota';
+    } else {
+      noteEl.classList.add('hidden');
+      document.getElementById('btn-add-note').textContent = '+ Aggiungi nota';
+    }
+  }
 }
 
 // ── Navigazione ───────────────────────────────────────────────────────
